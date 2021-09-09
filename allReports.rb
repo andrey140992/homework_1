@@ -1,6 +1,6 @@
 require 'csv'
 
-class ReportPrice
+class Reports
     attr_reader :vms_csv, :prices_csv, :volumes_csv
 
     def initialize(vms_csv, prices_csv, volumes_csv)
@@ -183,7 +183,7 @@ class ReportPrice
             
         end
 
-        
+
 
         vms_types_vol_sort = vms_types_vol.to_a.sort_by(&:last)
         puts " ВМ у которой подключено больше всего дополнительных дисков (по объему) id: #{vms_types_vol_sort[-1][0].to_s  + ", объем памяти: " + vms_types_vol_sort[-1][1].to_s}"
