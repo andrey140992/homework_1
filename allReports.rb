@@ -1,6 +1,6 @@
 require 'csv'
 
-class Reports
+class AllReports
     attr_reader :vms_csv, :prices_csv, :volumes_csv
 
     def initialize(vms_csv, prices_csv, volumes_csv)

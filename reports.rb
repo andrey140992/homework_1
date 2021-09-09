@@ -1,6 +1,6 @@
 require "./allReports"
 
-report = Reports.new("vms.csv", "prices.csv", "volumes.csv")
+report = AllReports.new("vms.csv", "prices.csv", "volumes.csv")
 
 report.highest_price
 report.lowest_price
