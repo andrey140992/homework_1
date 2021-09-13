@@ -3,7 +3,6 @@ require "./allReports"
 report = AllReports.new("./csv/vms.csv", "./csv/prices.csv", "./csv/volumes.csv")
 
 
-
 puts "Выберете отчет:
 1.Самая дорогая ВМ 
 2.Самая дешевая ВМ
@@ -22,7 +21,30 @@ elsif choice == "2"
     report.lowest_price  
 
 elsif choice == "3"
-    report.largest_VM_by_type 
+    puts " 
+    Выберете type :
+    1)  cpu
+    2)  ram
+    3)  ssd
+    4)  sas
+    5)  sata"
+
+    choice = gets.chomp
+
+    if choice == "1"
+        report.largest_VM_by_type_cpu
+    elsif choice == "2"
+        report.largest_VM_by_type_ram
+    elsif choice == "3"
+        report.largest_VM_by_type_ssd
+    elsif choice == "4"
+        report.largest_VM_by_type_sas
+    elsif choice == "5"
+        report.largest_VM_by_type_sata
+    else 
+        puts "Такого отчета нет!"
+    end 
+
 
 elsif choice == "4"
     puts " 

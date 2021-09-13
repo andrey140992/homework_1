@@ -5,21 +5,15 @@ class AllReports
     attr_reader :vms_csv, :prices_csv, :volumes_csv
 
     def initialize(vms_csv, prices_csv, volumes_csv)
-        @vms_csv = vms_csv
-        @prices_csv = prices_csv
-        @volumes_csv = volumes_csv
-    end
 
-    def parser
-        @@vms_table = CSV.parse(File.read(@vms_csv), headers: %i[id cpu ram hdd_type hdd_capacity])
-        @@vms_prices =  CSV.parse(File.read(@prices_csv), headers: %i[type price])
-        @@volumes_table = CSV.parse(File.read(@volumes_csv), headers: %i[id hdd_type hdd_capacity])
+       @@vms_table = CSV.parse(File.read(vms_csv), headers: %i[id cpu ram hdd_type hdd_capacity])
+       @@vms_prices =  CSV.parse(File.read(prices_csv), headers: %i[type price])
+       @@volumes_table = CSV.parse(File.read(volumes_csv), headers: %i[id hdd_type hdd_capacity])
+
     end
 
 
     def prices_vm
-
-        parser()
 
         vms_sums = {}
 
@@ -79,8 +73,6 @@ class AllReports
 
     def largest_VM_by_type
 
-        parser()
-
         vms_all_types = {}
         vms_types = {}
         vms_types_length ={}
@@ -118,9 +110,164 @@ class AllReports
     end
 
 
-    def VM_with_maximum_number_of_dop_disks
+    def largest_VM_by_type_cpu
 
-        parser()
+        vms_cpu = {}
+       
+        @@vms_table.each do |id, cpu, ram, hdd_type, hdd_capacity|
+  
+            vms_cpu[id[1]] = cpu[1].to_i 
+             
+        end
+
+        vms_cpu_sort = vms_cpu.to_a.sort_by(&:last)
+
+        puts " Самая объемная ВМ по параметру cpu id: #{vms_cpu_sort[-1][0].to_s + ", количество подключенных типов: " + vms_cpu_sort[-1][1].to_s}"
+
+    end
+
+
+    def largest_VM_by_type_ram
+
+        vms_ram = {}
+       
+        @@vms_table.each do |id, cpu, ram, hdd_type, hdd_capacity|
+  
+            vms_ram[id[1]] = ram[1].to_i 
+             
+        end
+
+        vms_ram_sort = vms_ram.to_a.sort_by(&:last)
+
+        puts " Самая объемная ВМ по параметру ram id: #{vms_ram_sort[-1][0].to_s + ", количество подключенных типов: " + vms_ram_sort[-1][1].to_s}"
+
+    end
+
+
+    def largest_VM_by_type_ssd
+
+        vms_types_ssd = {}
+        vms_types_ssd_length = {}
+       
+
+           @@vms_table.each do |id, cpu, ram, hdd_type, hdd_capacity|
+
+            vms_types_ssd[id[1]] = vms_types_ssd[id[1]] || []
+
+            if hdd_type[1] == "ssd"
+                vms_types_ssd[id[1]] << hdd_type[1]
+            end
+          
+            
+        end
+
+        @@volumes_table.each do |id, hdd_type, hdd_capacity|
+            
+            vms_types_ssd[id[1]] = vms_types_ssd[id[1]] || []
+
+            if hdd_type[1] == "ssd"
+                vms_types_ssd[id[1]] << hdd_type[1]
+            end
+          
+           
+        end
+
+        vms_types_ssd.each do |id, types|
+  
+            vms_types_ssd_length[id] = vms_types_ssd[id].length
+        
+        end
+
+        vms_types_ssd_length_sort = vms_types_ssd_length.to_a.sort_by(&:last)
+
+        puts " Самая объемная ВМ по параметру ssd id: #{vms_types_ssd_length_sort[-1][0].to_s + ", количество подключенных типов: " + vms_types_ssd_length_sort[-1][1].to_s}"
+
+    end
+
+
+    def largest_VM_by_type_sas
+
+        vms_types_sas = {}
+        vms_types_sas_length = {}
+       
+
+           @@vms_table.each do |id, cpu, ram, hdd_type, hdd_capacity|
+
+            vms_types_sas[id[1]] = vms_types_sas[id[1]] || []
+
+            if hdd_type[1] == "sas"
+                vms_types_sas[id[1]] << hdd_type[1]
+            end
+          
+            
+        end
+
+        @@volumes_table.each do |id, hdd_type, hdd_capacity|
+            
+            vms_types_sas[id[1]] = vms_types_sas[id[1]] || []
+
+            if hdd_type[1] == "sas"
+                vms_types_sas[id[1]] << hdd_type[1]
+            end
+          
+           
+        end
+
+        vms_types_sas.each do |id, types|
+  
+            vms_types_sas_length[id] = vms_types_sas[id].length
+        
+        end
+
+        vms_types_sas_length_sort = vms_types_sas_length.to_a.sort_by(&:last)
+
+        puts " Самая объемная ВМ по параметру sas id: #{vms_types_sas_length_sort[-1][0].to_s + ", количество подключенных типов: " + vms_types_sas_length_sort[-1][1].to_s}"
+
+    end
+
+
+    def largest_VM_by_type_sata
+
+        vms_types_sata = {}
+        vms_types_sata_length = {}
+       
+
+           @@vms_table.each do |id, cpu, ram, hdd_type, hdd_capacity|
+
+            vms_types_sata[id[1]] = vms_types_sata[id[1]] || []
+
+            if hdd_type[1] == "sata"
+                vms_types_sata[id[1]] << hdd_type[1]
+            end
+          
+            
+        end
+
+        @@volumes_table.each do |id, hdd_type, hdd_capacity|
+            
+            vms_types_sata[id[1]] = vms_types_sata[id[1]] || []
+
+            if hdd_type[1] == "sata"
+                vms_types_sata[id[1]] << hdd_type[1]
+            end
+          
+           
+        end
+
+        vms_types_sata.each do |id, types|
+  
+            vms_types_sata_length[id] = vms_types_sata[id].length
+        
+        end
+
+        vms_types_sata_length_sort = vms_types_sata_length.to_a.sort_by(&:last)
+
+        puts " Самая объемная ВМ по параметру sata id: #{vms_types_sata_length_sort[-1][0].to_s + ", количество подключенных типов: " + vms_types_sata_length_sort[-1][1].to_s}"
+
+    end
+
+
+    def VM_with_maximum_number_of_dop_disks
 
         vms_types = {}
         vms_types_length ={}
@@ -144,9 +291,8 @@ class AllReports
 
     end
 
-    def VM_with_maximum_number_of_dop_disks_ssd
 
-        parser()
+    def VM_with_maximum_number_of_dop_disks_ssd
 
         vms_ssd ={}
         vms_ssd_length = {}
@@ -173,9 +319,8 @@ class AllReports
 
     end
 
-    def VM_with_maximum_number_of_dop_disks_sas
 
-        parser()
+    def VM_with_maximum_number_of_dop_disks_sas
 
         vms_sas ={}
         vms_sas_length = {}
@@ -202,9 +347,8 @@ class AllReports
 
     end
 
-    def VM_with_maximum_number_of_dop_disks_sata
 
-        parser()
+    def VM_with_maximum_number_of_dop_disks_sata
 
         vms_sata ={}
         vms_sata_length = {}
@@ -234,8 +378,6 @@ class AllReports
     
     def VM_with_maximum_vol_of_dop_disks
 
-        parser()
-
         vms_types_vol = {}
 
         @@volumes_table.each do |id, hdd_type, hdd_capacity|
@@ -253,9 +395,8 @@ class AllReports
 
     end
 
-    def VM_with_maximum_vol_of_dop_disks_ssd
 
-        parser()
+    def VM_with_maximum_vol_of_dop_disks_ssd
 
         vms_ssd_vol = {}
 
@@ -276,9 +417,8 @@ class AllReports
 
     end
 
-    def VM_with_maximum_vol_of_dop_disks_sas
 
-        parser()
+    def VM_with_maximum_vol_of_dop_disks_sas
 
         vms_sas_vol = {}
 
@@ -299,9 +439,8 @@ class AllReports
 
     end
 
+    
     def VM_with_maximum_vol_of_dop_disks_sata
-
-        parser()
 
         vms_sata_vol = {}
 
