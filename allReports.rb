@@ -2,14 +2,20 @@ require 'csv'
 
 class AllReports
 
-    attr_reader :vms_csv, :prices_csv, :volumes_csv
+    attr_reader :vms_csv, :prices_csv, :volumes_csv, :n
 
-    def initialize(vms_csv, prices_csv, volumes_csv)
+    def initialize(vms_csv, prices_csv, volumes_csv, n)
 
        @@vms_table = CSV.parse(File.read(vms_csv), headers: %i[id cpu ram hdd_type hdd_capacity])
        @@vms_prices =  CSV.parse(File.read(prices_csv), headers: %i[type price])
        @@volumes_table = CSV.parse(File.read(volumes_csv), headers: %i[id hdd_type hdd_capacity])
 
+       if n.to_i > 0
+        @@n = n.to_i
+        else
+        @@n = 10
+        end
+       
     end
 
 
@@ -56,17 +62,16 @@ class AllReports
     def highest_price
 
         prices_vm()
-
-        puts " Самая дорогая ВМ #{@@prices_vm[-1]}"
+        
+        puts " Самые дорогие ВМ #{@@prices_vm[-@@n ... prices_vm.length.to_i].reverse}"
 
     end
 
 
     def lowest_price
-
         prices_vm()
       
-        puts " Самая дешевая ВМ #{@@prices_vm[0]}"
+        puts " Самые дешевые ВМ #{@@prices_vm[ 0 ... @@n]}"
 
     end
 
@@ -104,8 +109,8 @@ class AllReports
         end
 
         vms_all_types_sort = vms_all_types.to_a.sort_by(&:last)
-
-        puts " Самая объемная ВМ по параметру type id: #{vms_all_types_sort[-1][0].to_s + ", количество подключенных типов: " + vms_all_types_sort[-1][1].to_s}"
+       
+        puts " Самые объемные ВМ по параметру type : #{vms_all_types_sort[-@@n ... vms_all_types_sort.length.to_i - 1]}"
 
     end
 
@@ -122,7 +127,7 @@ class AllReports
 
         vms_cpu_sort = vms_cpu.to_a.sort_by(&:last)
 
-        puts " Самая объемная ВМ по параметру cpu id: #{vms_cpu_sort[-1][0].to_s + ", количество подключенных типов: " + vms_cpu_sort[-1][1].to_s}"
+        puts " Самые объемные ВМ по параметру cpu : #{vms_cpu_sort[-@@n ... vms_cpu_sort.length.to_i].reverse}"
 
     end
 
@@ -139,7 +144,7 @@ class AllReports
 
         vms_ram_sort = vms_ram.to_a.sort_by(&:last)
 
-        puts " Самая объемная ВМ по параметру ram id: #{vms_ram_sort[-1][0].to_s + ", количество подключенных типов: " + vms_ram_sort[-1][1].to_s}"
+        puts " Самые объемные ВМ по параметру ram : #{vms_ram_sort[-@@n ... vms_ram_sort.length.to_i].reverse}"
 
     end
 
@@ -180,7 +185,7 @@ class AllReports
 
         vms_types_ssd_length_sort = vms_types_ssd_length.to_a.sort_by(&:last)
 
-        puts " Самая объемная ВМ по параметру ssd id: #{vms_types_ssd_length_sort[-1][0].to_s + ", количество подключенных типов: " + vms_types_ssd_length_sort[-1][1].to_s}"
+        puts " Самые объемные ВМ по параметру ssd : #{vms_types_ssd_length_sort[-@@n ... vms_types_ssd_length_sort.length.to_i].reverse}"
 
     end
 
@@ -221,7 +226,7 @@ class AllReports
 
         vms_types_sas_length_sort = vms_types_sas_length.to_a.sort_by(&:last)
 
-        puts " Самая объемная ВМ по параметру sas id: #{vms_types_sas_length_sort[-1][0].to_s + ", количество подключенных типов: " + vms_types_sas_length_sort[-1][1].to_s}"
+        puts " Самые объемные ВМ по параметру sas : #{vms_types_sas_length_sort[-@@n ... vms_types_sas_length_sort.length.to_i].reverse}"
 
     end
 
@@ -262,7 +267,7 @@ class AllReports
 
         vms_types_sata_length_sort = vms_types_sata_length.to_a.sort_by(&:last)
 
-        puts " Самая объемная ВМ по параметру sata id: #{vms_types_sata_length_sort[-1][0].to_s + ", количество подключенных типов: " + vms_types_sata_length_sort[-1][1].to_s}"
+        puts " Самые объемные ВМ по параметру sata : #{vms_types_sata_length_sort[-@@n ... vms_types_sata_length_sort.length.to_i].reverse}"
 
     end
 
@@ -287,7 +292,8 @@ class AllReports
         end
 
         vms_types_length_sort = vms_types_length.to_a.sort_by(&:last)
-        puts " ВМ у которой подключено больше всего дополнительных дисков (по количеству штук) id: #{vms_types_length_sort[-1][0].to_s  + ", количество подключенных дополнительных дисков: " + vms_types_length_sort[-1][1].to_s}"
+
+        puts " ВМ у которых подключено больше всего дополнительных дисков (по количеству штук): #{vms_types_length_sort[-@@n ... vms_types_length_sort.length.to_i].reverse}"
 
     end
 
@@ -315,7 +321,8 @@ class AllReports
         end
 
         vms_ssd_length_sort = vms_ssd_length.to_a.sort_by(&:last)
-        puts " ВМ у которой подключено больше всего дополнительных дисков по типу ssd (по количеству штук) id: #{vms_ssd_length_sort[-1][0].to_s  + ", количество подключенных дополнительных дисков ssd: " + vms_ssd_length_sort[-1][1].to_s}"
+
+        puts " ВМ у которых подключено больше всего дополнительных дисков по типу ssd (по количеству штук) : #{vms_ssd_length_sort[-@@n ... vms_ssd_length_sort.length.to_i].reverse}"
 
     end
 
@@ -343,7 +350,8 @@ class AllReports
         end
 
         vms_sas_length_sort = vms_sas_length.to_a.sort_by(&:last)
-        puts " ВМ у которой подключено больше всего дополнительных дисков по типу sas (по количеству штук) id: #{vms_sas_length_sort[-1][0].to_s  + ", количество подключенных дополнительных дисков sas: " + vms_sas_length_sort[-1][1].to_s}"
+
+        puts " ВМ у которых подключено больше всего дополнительных дисков по типу sas (по количеству штук) : #{vms_sas_length_sort[-@@n ... vms_sas_length_sort.length.to_i].reverse}"
 
     end
 
@@ -371,7 +379,8 @@ class AllReports
         end
 
         vms_sata_length_sort = vms_sata_length.to_a.sort_by(&:last)
-        puts " ВМ у которой подключено больше всего дополнительных дисков по типу sata (по количеству штук) id: #{vms_sata_length_sort[-1][0].to_s  + ", количество подключенных дополнительных дисков sata: " + vms_sata_length_sort[-1][1].to_s}"
+       
+        puts " ВМ у которых подключено больше всего дополнительных дисков по типу sata (по количеству штук) : #{vms_sata_length_sort[-@@n ... vms_sata_length_sort.length.to_i].reverse}"
 
     end
 
@@ -391,7 +400,8 @@ class AllReports
 
 
         vms_types_vol_sort = vms_types_vol.to_a.sort_by(&:last)
-        puts " ВМ у которой подключено больше всего дополнительных дисков (по объему) id: #{vms_types_vol_sort[-1][0].to_s  + ", объем памяти: " + vms_types_vol_sort[-1][1].to_s}"
+
+        puts " ВМ у которых подключено больше всего дополнительных дисков (по объему) : #{vms_types_vol_sort[-@@n ... vms_types_vol_sort.length.to_i].reverse}"
 
     end
 
@@ -413,7 +423,8 @@ class AllReports
 
         
         vms_ssd_vol_sort = vms_ssd_vol.to_a.sort_by(&:last)
-        puts " ВМ у которой подключено больше всего дополнительных дисков ssd (по объему) id: #{vms_ssd_vol_sort[-1][0].to_s  + ", объем памяти: " + vms_ssd_vol_sort[-1][1].to_s}"
+        
+        puts " ВМ у которых подключено больше всего дополнительных дисков ssd (по объему) : #{vms_ssd_vol_sort[-@@n ... vms_ssd_vol_sort.length.to_i].reverse}"
 
     end
 
@@ -435,7 +446,8 @@ class AllReports
 
         
         vms_sas_vol_sort = vms_sas_vol.to_a.sort_by(&:last)
-        puts " ВМ у которой подключено больше всего дополнительных дисков sas (по объему) id: #{vms_sas_vol_sort[-1][0].to_s  + ", объем памяти: " + vms_sas_vol_sort[-1][1].to_s}"
+        
+        puts " ВМ у которых подключено больше всего дополнительных дисков sas (по объему) : #{vms_sas_vol_sort[-@@n ... vms_sas_vol_sort.length.to_i].reverse}"
 
     end
 
@@ -457,7 +469,8 @@ class AllReports
 
         
         vms_sata_vol_sort = vms_sata_vol.to_a.sort_by(&:last)
-        puts " ВМ у которой подключено больше всего дополнительных дисков sata (по объему) id: #{vms_sata_vol_sort[-1][0].to_s  + ", объем памяти: " + vms_sata_vol_sort[-1][1].to_s}"
+        
+        puts " ВМ у которых подключено больше всего дополнительных дисков sata (по объему) : #{vms_sata_vol_sort[-@@n ... vms_sata_vol_sort.length.to_i].reverse}"
 
     end
 

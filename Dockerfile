@@ -8,4 +8,4 @@ WORKDIR $SRC_PATH
 
 ADD . .
 
-CMD ["ruby", "reports.rb"]
+CMD ["ruby", "docRep.rb"]
