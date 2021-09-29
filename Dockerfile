@@ -8,4 +8,8 @@ WORKDIR $SRC_PATH
 
 ADD . .
 
-CMD ["ruby", "docRep.rb"]
+CMD ["ruby", "docReps.rb"]
+
+
+# docker build . -t reports
+# docker run --rm reports

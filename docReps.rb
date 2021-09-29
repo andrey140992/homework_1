@@ -1,7 +1,7 @@
 require "./allReports"
 
 
-report = AllReports.new
+report = AllReports.new("10")
 
 
 report.highest_price
