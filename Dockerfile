@@ -1,10 +1,11 @@
 FROM ruby:2.7-buster
 
+RUN apt-get update
 
-ADD . /Sinatra-Docker
-WORKDIR /Sinatra-Docker
-RUN bundle install
+ENV SRC_PATH /app
+RUN mkdir -p $SRC_PATH
+WORKDIR $SRC_PATH
 
-EXPOSE 4567
+ADD . .
 
-CMD ["/bin/bash"]
+CMD ["ruby", "docRep.rb"]
