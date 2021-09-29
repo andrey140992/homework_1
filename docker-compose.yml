@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  app:
+    build: .
+    command: bundle exec ruby docRep.rb
+    ports:
+      - "4567:4567"
+    volumes:
+      - .:/Sinatra-Docker

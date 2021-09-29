@@ -1,11 +1,23 @@
 require "./allReports"
+require 'sinatra'
+
+#report = AllReports.new("./csv/vms.csv", "./csv/prices.csv", "./csv/volumes.csv", "10")
 
 
-report = AllReports.new("./csv/vms.csv", "./csv/prices.csv", "./csv/volumes.csv", "10")
 
+set :bind, '0.0.0.0'
+set :port, 4567
 
-report.highest_price
-report.lowest_price
-report.largest_VM_by_type
-report.VM_with_maximum_number_of_dop_disks
-report.VM_with_maximum_vol_of_dop_disks
+get '/' do
+    return "hello world!"
+end
+
+get '/reports' do
+  report = AllReports.new("./csv/vms.csv", "./csv/prices.csv", "./csv/volumes.csv", "10")
+  return report.highest_price
+end
+
+get '/say/*/to/*' do
+  # matches /say/hello/to/world
+  params['splat'] # => ["hello", "world"]
+end

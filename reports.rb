@@ -2,7 +2,9 @@ require "./allReports"
 
 puts "Выберете кол во вм: "
 
-report = AllReports.new("./csv/vms.csv", "./csv/prices.csv", "./csv/volumes.csv", gets.chomp)
+n = gets.chomp
+
+report = AllReports.new(n)
 
 puts "Выберете отчет:
 1.Самые дорогие ВМ 
