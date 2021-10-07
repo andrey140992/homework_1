@@ -11,5 +11,3 @@ ADD . .
 CMD ["ruby", "docReps.rb"]
 
 
-# docker build . -t reports
-# docker run --rm reports
